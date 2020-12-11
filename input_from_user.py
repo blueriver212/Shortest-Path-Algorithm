@@ -1,4 +1,9 @@
 #Task 1: Bringing in the user coordinate from input.
+
+# Adding a GUI.
+# Needs to have an input x and y coordinate.
+
+
 def user():
     """
     This is the coordinate input for the user. There is error handling here to ensure the location is added in the
