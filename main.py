@@ -1,16 +1,12 @@
-<<<<<<< HEAD
 import tkinter as tk
 import tkinter.messagebox
-=======
 from input_from_user import *
 from nearest_ITN import *
 from error_handling import *
 from shapely.geometry import *
->>>>>>> 0f6b9fc8aa8ae5be5d1b67811ea0e2fa1d0598ee
 
 class UserInput:
 
-<<<<<<< HEAD
     def __init__(self):
 
         self.window = tk.Tk()
@@ -72,10 +68,7 @@ def main():
     # creating window using the UserInput class
     root = UserInput()
     root.window.mainloop()
-=======
-def task1():
-    coordinate = user()
-    coord_input(coordinate)
+
 
 def task2():
     pass
@@ -94,9 +87,8 @@ def task3():
     node_near_high_point = itn.nearest_node(highest)
     print(node_near_user, node_near_high_point)
 
->>>>>>> 0f6b9fc8aa8ae5be5d1b67811ea0e2fa1d0598ee
 
 if __name__ == "__main__":
-    task1()
+    main()
     task2()
     task3()
