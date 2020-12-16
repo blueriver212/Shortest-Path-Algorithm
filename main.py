@@ -1,7 +1,8 @@
 from input_from_user import *
-from error_handling import *
 from nearest_ITN import *
-from shapely.geometry import Point
+from error_handling import *
+from shapely.geometry import *
+
 
 def task1():
     coordinate = user()
@@ -21,10 +22,8 @@ def task3():
 
     # find the closest node for closest algorithm
     node_near_user = itn.nearest_node(coord)
-    node_near_highest_point = itn.nearest_node(highest)
-    print(node_near_user, node_near_highest_point)
-
-
+    node_near_high_point = itn.nearest_node(highest)
+    print(node_near_user, node_near_high_point)
 
 
 if __name__ == "__main__":

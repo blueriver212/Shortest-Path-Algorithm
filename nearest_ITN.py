@@ -45,6 +45,5 @@ class ITN:
         idx = self.make_tree()
         node_nearest_point = list(idx.nearest((point.x, point.y)))
         return node_nearest_point
-#Delete this at the end of the project
-# if __name__ == "__main__":
-#     main()
+
+
