@@ -48,23 +48,5 @@ class ITN:
 
         return node_nearest_point
 
-
-
-
-def main():
-    # example of input coordinate, this will change when we merge the tasks together
-    coord = Point(434000, 90000)
-    highest = Point(439619, 85800)
-
-    #Get the error handling from sep document
-    json_file = Errors.json_input()
-    itn = ITN(json_file)
-
-    #find the closest node for closest algorithm
-    temp = itn.nearest_node(coord)
-    temp1 = itn.nearest_node(highest)
-    print(temp)
-    print(temp1)
-
 if __name__ == "__main__":
     main()
