@@ -3,7 +3,7 @@ import pyproj
 import shapefile
 from shapely.geometry import Point, Polygon
 import rasterio.mask
-
+import numpy as np
 
 
 def read_island(file):
@@ -31,13 +31,22 @@ def create_buffer(coord, island):
 
 
 def clip_elevation(buffer, elevation):
+    """
+        A function to create a buffer clipping elevation
+        :return:
+        """
     features_buffer = [buffer.__geo_interface__]
-    out_image, out_transform = rasterio.mask.mask(elevation, features_buffer, crop=False)
+    out_image, out_transform = rasterio.mask.mask(
+        elevation, features_buffer, crop=False)
     reshape_area = out_image.reshape(out_image.shape[1], out_image.shape[2])
     return reshape_area
 
 
 def highest_point(reshape_area):
+    """
+        Find the index of highest point in buff area
+        :return:
+        """
     point_set = set()
     [r, c] = reshape_area.shape
     for i in range(r):
@@ -46,3 +55,4 @@ def highest_point(reshape_area):
     point_list = list(point_set)
     highest = max(point_list)
     highest_index = np.where(reshape_area == highest)
+    return highest_index
