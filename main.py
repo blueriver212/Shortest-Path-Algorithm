@@ -1,7 +1,9 @@
 from nearest_ITN import *
 from error_handling import *
-from shapely.geometry import *
+from shapely.geometry import Point, Polygon
+from highest_point import *
 from GUI import *
+import os
 
 
 def task1():
@@ -10,7 +12,17 @@ def task1():
     root.window.mainloop()
 
 def task2():
-    pass
+    pt = Point(434000, 90000)
+    root = os.path.dirname(os.getcwd())
+    island_file = 'isle_of_wight.shp'
+    elevation_efile = 'SZ.asc'
+    island_path = os.path.join(root, 'Material', 'shape', island_file)
+    elevation_path = os.path.join(root, 'Material', 'elevation', elevation_file)
+
+    out_loc = r'clip.tif'
+    hp = HighestPoint(pt, island_path, elevation_path, out_loc)
+    clipped_path = hp.clip_elevation()
+    highest_point_in_area = hp.find_highest_point(clipped_path)
 
 def task3():
     # example of input coordinate, this will change when we merge the tasks together
@@ -28,6 +40,6 @@ def task3():
 
 
 if __name__ == "__main__":
-    task1()
+    #task1()
     task2()
-    task3()
+    #task3()
