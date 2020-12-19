@@ -53,11 +53,13 @@ class HighestPoint:
         root = os.path.dirname(os.getcwd())
         out_tif = os.path.join(root, 'Material', 'elevation', self.__out_loc)
 
+        with rasterio.open(out_tif, 'w', **out_meta) as dest:
+            dest.write(out_image)
         # Plotting out file
         clip = rasterio.open(out_tif)
 
-        # pyplot.imshow(clip.read(1), cmap="pink")
-        # pyplot.show()
+        pyplot.imshow(clip.read(1), cmap="pink")
+        pyplot.show()
         return out_tif
 
     def find_highest_point(self, clipped_path):
