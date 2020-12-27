@@ -3,7 +3,6 @@ import networkx as nx
 import pandas as pd
 import rasterio
 from shapely.geometry import Point
-import numpy as np
 import geopandas as gpd
 import matplotlib.pyplot as plt
 from shapely.geometry import LineString
