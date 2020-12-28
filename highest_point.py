@@ -33,10 +33,10 @@ class HighestPoint:
         # Open the main raster
         data = rasterio.open(self.__ele_path)
 
-        #Create a 5km buffer from the point first, then turn to gdf
+        # Create a 5km buffer from the point first, then turn to gdf
         buffer = self.__user_point.buffer(5000)
-        geo = gpd.GeoDataFrame({'geometry': buffer}, index=[0], crs="EPSG:27700") #crs=from_epsg(27700)
-        geo = geo.to_crs(crs = data.crs.data)
+        geo = gpd.GeoDataFrame({'geometry': buffer}, index=[0], crs="EPSG:27700")  # crs=from_epsg(27700)
+        geo = geo.to_crs(crs=data.crs.data)
 
         # Function to parse features from GeoDataFrame in such a manner that rasterio wants them
         clip_extent = [json.loads(geo.to_json())['features'][0]['geometry']]
@@ -69,28 +69,12 @@ class HighestPoint:
         """
         with rasterio.open(clipped_path, 'r') as ds:
             arr = ds.read()  # read all raster values
-            #arr = arr.reshape(arr.shape[1], arr.shape[2]) # to 3d matrix
+            # arr = arr.reshape(arr.shape[1], arr.shape[2]) # to 3d matrix
             high_point = np.max(arr)
             print(f'Your highest point is {high_point}')
             var, max_y, max_x = np.where(arr == high_point)
-            print(var, max_y, max_x)
+            # print(var, max_y, max_x)
             out = ds.transform*(max_y[0], max_x[0])
             high_point = Point(out)
 
             return high_point
-
-
-
-
-
-
-
-        # highest_index = np.where(
-        #     self.clip_elevation() == np.max(
-        #         self.clip_elevation()))
-        # [row, col] = highest_index[0]
-        # coordinate = self.read_elevation().xy(row, col)
-        # print(coordinate)
-        # print(np.max(self.clip_elevation()))
-        #
-        # return coordinate
