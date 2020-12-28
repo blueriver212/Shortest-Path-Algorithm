@@ -68,13 +68,13 @@ class HighestPoint:
         :return:
         """
         with rasterio.open(clipped_path, 'r') as ds:
-            arr = ds.read()  # read all raster values
-            # arr = arr.reshape(arr.shape[1], arr.shape[2]) # to 3d matrix
-            high_point = np.max(arr)
-            print(f'Your highest point is {high_point}')
-            var, max_y, max_x = np.where(arr == high_point)
-            # print(var, max_y, max_x)
-            out = ds.transform*(max_y[0], max_x[0])
-            high_point = Point(out)
+            arr = ds.read(1)  # read all raster values
+            high_point = np.amax(arr)
+            res = np.where(arr == high_point)
+            highest = ds.xy(res[0], res[1])
+            highest_point = Point(highest[0][0], highest[1][0])
+            print(f'Your highest point is {highest_point}')
 
-            return high_point
+
+
+            return highest_point
