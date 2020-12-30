@@ -5,10 +5,9 @@ from highest_point import *
 from GUI import *
 from shortestpath import *
 from Map_plotting import *
+from task6 import *
 import os
-import matplotlib.pyplot as plt
-
-from test import *
+import sys
 
 def main():
 
@@ -19,7 +18,7 @@ def main():
     # root.window.mainloop()
 
     # TASK 2
-    pt = Point(439619, 85800)
+    pt = Point(455000, 85000)
     root = os.path.dirname(os.getcwd())
     island_file = 'isle_of_wight.shp'
     elevation_file = 'SZ.asc'
@@ -27,6 +26,18 @@ def main():
     island_path = os.path.join(root, 'Material', 'shape', island_file)
     elevation_path = os.path.join(root, 'Material', 'elevation', elevation_file)
     itn_path = os.path.join(root, 'Material', 'itn', itn)
+
+    # Task 6
+    # Testing whether the user point is on the island.
+    inisl = InIsland(pt, island_path)
+    if inisl.is_inside() is True:
+        print('You are confirmed to be on the island! \n'
+              'The software will continue')
+    else:
+        print('Unfortunately, you are not on the Isle of Wight, so this program cannot help you. \n'
+              'This software is now shutting down')
+        sys.exit()
+
 
     out_loc = r'clip.tif'
     print('Clipping your input raster to a 5km Buffer...')
