@@ -8,20 +8,22 @@ import matplotlib.pyplot as plt
 from shapely.geometry import LineString
 
 
+
 class NearestRoad:
 
-    def __init__(self, ele_path, nearest_node, highest_node,user_itn):
+    def __init__(self, ele_path, nearest_node, highest_node,user_itn,node_set):
         self.elevation = rasterio.open(ele_path)
+        self.read_elevation = self.elevation.read(1)
         self.nearest_node = nearest_node[0]
         self.highest_node = highest_node[0]
         self.user_itn = user_itn
         self.road_links = user_itn["roadlinks"]
         self.nodes_table = pd.DataFrame(user_itn['roadnodes'])
+        self.node_set = node_set
         self.nodes_name_list = self.nodes_table.columns.tolist()
 
-
     def get_road(self):
-        ele_pd = self.elevation.read(1)
+
         g = nx.Graph()
         for link in self.road_links:
             start = self.road_links[link]["start"]
@@ -32,26 +34,27 @@ class NearestRoad:
                 coord_start.x, coord_start.y)
             row_end, col_end = self.elevation.index(
                 coord_end.x, coord_end.y)
-            ele_start = ele_pd[row_start, col_start]
-            ele_end = ele_pd[row_end, col_end]
+            ele_start = self.read_elevation[row_start, col_start]
+            ele_end = self.read_elevation[row_end, col_end]
             ele_gap = ele_end - ele_start
 
             if ele_gap > 0:
                 g.add_edge(
                     start, end,
                     fid=link,
-                    weight=self.road_links[link]['length'] / 5000 * 6 + ele_gap / 10)
+                    weight=self.road_links[link]['length'] / 5000 * 60 + ele_gap / 10)
             else:
                 g.add_edge(
                     start, end,
                     fid=link,
-                    weight=self.road_links[link]['length'] / 5000 * 6)
+                    weight=self.road_links[link]['length'] / 5000 * 60)
         return g
 
     def get_nearest_path(self,g):
         path = nx.dijkstra_path(g,
-                                source=self.nodes_name_list[self.nearest_node],
-                                target=self.nodes_name_list[self.highest_node])
+                                source=self.node_set[self.nearest_node][0],
+                                target=self.node_set[self.highest_node][0])
+
 
         links = []  # this list will be used to populate the feature id (fid) column
         geom = []  # this list will be used to populate the geometry column
