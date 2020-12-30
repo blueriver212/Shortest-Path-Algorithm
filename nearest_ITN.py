@@ -28,13 +28,15 @@ class ITN:
         idx = index.Index()
         coord = self.user_itn()
         coord = coord['roadnodes']
-
+        node_set = {}
+        nodename_set = {}
         count = 0
         for point in coord:
             idx.insert(count, coord[point]['coords'])
-            count += 1
+            node_set.update({count:[point,coord[point]['coords'][:2]]})
+            count+=1
 
-        return idx
+        return idx, node_set,
 
     def nearest_node(self, point):
         """
@@ -42,7 +44,7 @@ class ITN:
         :return:
         """
         # Find the nearest node in the rTree index
-        idx = self.make_tree()
+        idx = self.make_tree()[0]
         node_nearest_point = list(idx.nearest((point.x, point.y)))
         return node_nearest_point
 
