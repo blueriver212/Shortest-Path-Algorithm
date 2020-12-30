@@ -3,7 +3,11 @@ from error_handling import *
 from shapely.geometry import Point, Polygon
 from highest_point import *
 from GUI import *
+from shortestpath import *
+from Map_plotting import *
 import os
+import matplotlib.pyplot as plt
+
 from test import *
 
 def main():
@@ -15,7 +19,7 @@ def main():
     # root.window.mainloop()
 
     # TASK 2
-    pt = Point(450000, 92000)
+    pt = Point(439619, 85800)
     root = os.path.dirname(os.getcwd())
     island_file = 'isle_of_wight.shp'
     elevation_file = 'SZ.asc'
@@ -39,17 +43,36 @@ def main():
     itn = ITN(json_file)
     print('Calculating the nearest road nodes to you...')
 
+    # TASK 4
     # find the closest node for closest algorithm
+    user_itn = itn.user_itn()
+    node_set = itn.make_tree()[1]
     node_near_user = itn.nearest_node(pt)
     node_near_high_point = itn.nearest_node(highest_point_in_area)
     print(f'The node nearest you is {node_near_user} \n'
           f'The node nearest to the highest point is {node_near_high_point}')
 
-    nr = NearestRoad(elevation_path, node_near_user, node_near_high_point)
-    get_road = nr.get_road(itn_path)
-    print(f'The road of your journey is: {get_road}')
-    dijkstra = nr.get_nearest_path()
-    print(dijkstra)
+    nr = NearestRoad(elevation_path, node_near_user, node_near_high_point,user_itn,node_set)
+
+    g = nr.get_road()
+    print(f'The road of your journey is: {g}')
+    dijkstra = nr.get_nearest_path(g)
+
+    #TASK 5
+    # plot background
+    bg_file = 'raster-50k_2724246.tif'
+    bg_path = os.path.join(root, 'Material', 'background', bg_file,)
+    nearest_node = Point(node_set[node_near_user[0]][1])
+    highest_node = Point(node_set[node_near_high_point[0]][1])
+    plot_bg = MapPlotting(bg_path,dijkstra,pt,highest_point_in_area,nearest_node,highest_node,clipped_path).plot_map()
+
+
+
+
+
+
+
 
 if __name__ == "__main__":
     main()
+
