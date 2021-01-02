@@ -34,10 +34,7 @@ class HighestPoint:
 
         # Create a 5km buffer from the point first, then turn to gdf
         buffer = self.__user_point.buffer(5000)
-        geo = gpd.GeoDataFrame({'geometry': buffer}, index=[0], crs="EPSG:27700")  # crs=from_epsg(27700)
-        #geo = geo.to_crs(crs=data.crs.data)
-        #geo = geo.to_crs(crs=({'init': 'epsg:27700'}))
-        #geo = geo.to_crs(crs="EPSG:27700")
+        geo = gpd.GeoDataFrame({'geometry': buffer}, index=[0], crs="EPSG:27700")
 
         # Function to parse features from GeoDataFrame in such a manner that rasterio wants them
         clip_extent = [json.loads(geo.to_json())['features'][0]['geometry']]
