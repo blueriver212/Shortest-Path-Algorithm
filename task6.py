@@ -1,5 +1,5 @@
 from shapely.geometry import Point, asShape
-import fiona
+import geopandas as gpd
 import os
 
 class InIsland:
@@ -14,16 +14,14 @@ class InIsland:
         :return: Boolean Outcome.
         Taken from https://gis.stackexchange.com/questions/84114/shapely-unable-to-tell-if-polygon-contains-point
         """
-        shp = fiona.open(self.__island_path)
-
-        shapefile_record = next(iter(shp))
-        shape = asShape(shapefile_record['geometry'])
+        shp = gpd.read_file(self.__island_path)
+        shape = asShape(shp.geometry[0])
 
         if shape.contains(self.__point):
             return True
 
 if __name__ == '__main__':
-    pt = Point(439619, 85800)
+    pt = Point(425000, 75000)
     root = os.path.dirname(os.getcwd())
     island_file_name = 'isle_of_wight.shp'
     island_file = os.path.join(root, 'Material', 'shape', island_file_name)
