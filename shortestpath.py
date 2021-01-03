@@ -22,7 +22,7 @@ class NearestRoad:
         self.node_set = node_set
         self.nodes_name_list = self.nodes_table.columns.tolist()
 
-    def get_road(self):
+    def get_road_walk(self):
 
         g = nx.Graph()
         for link in self.road_links:
@@ -49,6 +49,9 @@ class NearestRoad:
                     fid=link,
                     weight=self.road_links[link]['length'] / 5000 * 60)
         return g
+
+    def get_road_drive(self):
+        pass
 
     def get_nearest_path(self,g):
         path = nx.dijkstra_path(g,
