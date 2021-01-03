@@ -47,12 +47,10 @@ class UserInput:
                     x = float(x_coord)
                     y = float(y_coord)
                 except ValueError:
-                    #https://postcodes.io/docs
-                    #https://github.com/ideal-postcodes/postcodes.io/
                     pc = str(postcode).replace("","")
-                    r = requests.get('https://api.postcodes.io/postcodes/' + str(pt))
+                    resp = requests.get('https://api.postcodes.io/postcodes/' + str(pt))
                     if api.status_code != 404:
-                        json_data = json.loads(r.text)
+                        json_data = json.loads(resp.text)
                         pce = json_data["result"]["eastings"]
                         pcn = json_data["result"]["nortings"]
                         x = float(pce)
