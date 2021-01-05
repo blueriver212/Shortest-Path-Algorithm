@@ -47,7 +47,7 @@ def main():
     bt6 = tk.Button(window, text='Go running', height=1, width=18, command=gorunning)
     bt6.place(x=200, y=250)
     window.mainloop()
-    
+
 
 def gorunning():
     global getx,gety,getcoord,shp_file,json_file,asc_file
@@ -78,6 +78,7 @@ def gorunning():
     # root.window.mainloop()
 
     # TASK 2
+
     pt = Point(coord_e, coord_n)
     root = os.path.dirname(os.getcwd())
     island_path = shp_file
@@ -95,10 +96,10 @@ def gorunning():
               'This software is now shutting down')
         sys.exit()
 
-
+    buffer_range = float(input("please input the radius of your buffer area:" ))
     out_loc = r'clip.tif'
-    print('Clipping your input raster to a 5km Buffer...')
-    hp = HighestPoint(pt, island_path, elevation_path, out_loc)
+    print(f'Clipping your input raster to a {buffer_range}km Buffer...')
+    hp = HighestPoint(pt, island_path, elevation_path, out_loc,buffer_range)
     clipped_path = hp.clip_elevation()
     highest_point_in_area = hp.find_highest_point(clipped_path)
     print(f'The highest point in your area is {highest_point_in_area}')
@@ -120,11 +121,12 @@ def gorunning():
     print(f'The node nearest you is {node_near_user} \n'
           f'The node nearest to the highest point is {node_near_high_point}')
 
-    nr = NearestRoad(elevation_path, node_near_user, node_near_high_point,user_itn,node_set)
+    nr = NearestRoad(elevation_path, pt,node_near_user, node_near_high_point,user_itn,node_set)
 
-    g = nr.get_road()
+    g = nr.get_road_walk()
     print(f'The road of your journey is: {g}')
     dijkstra = nr.get_nearest_path(g)
+    dijkstra_drive = nr.get_road_drive()
 
     #TASK 5
     # plot background
@@ -132,8 +134,10 @@ def gorunning():
     bg_path = os.path.join(root, 'Material', 'background', bg_file,)
     nearest_node = Point(node_set[node_near_user[0]][1])
     highest_node = Point(node_set[node_near_high_point[0]][1])
-    plot_bg = MapPlotting(bg_path,dijkstra,pt,highest_point_in_area,nearest_node,highest_node,clipped_path).plot_map()
-    
+    plot = MapPlotting(bg_path,dijkstra,pt,highest_point_in_area,nearest_node,highest_node,clipped_path)
+    plot_walk = plot.plot_map(buffer_range)
+    plot_drive = plot.plot_drive_path(dijkstra_drive)
+
 def user_input():
         global getx,gety,getcoord,window
         x_coord = getx.get()

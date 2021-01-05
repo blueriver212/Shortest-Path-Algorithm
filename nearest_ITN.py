@@ -29,12 +29,11 @@ class ITN:
         coord = self.user_itn()
         coord = coord['roadnodes']
         node_set = {}
-        nodename_set = {}
         count = 0
         for point in coord:
             idx.insert(count, coord[point]['coords'])
             node_set.update({count:[point,coord[point]['coords'][:2]]})
-            count+=1
+            count += 1
 
         return idx, node_set,
 

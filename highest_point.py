@@ -10,12 +10,12 @@ import numpy as np
 
 class HighestPoint:
 
-    def __init__(self, user_point, island_path, ele_path, out_loc):
+    def __init__(self, user_point, island_path, ele_path, out_loc,buffer_range):
         self.__user_point = user_point
         self.__island_path = island_path
         self.__ele_path = ele_path
         self.__out_loc = out_loc
-
+        self.__buffer_range= buffer_range
     def read_island(self):
         island_file = gpd.read_file(self.__island_path)
         return island_file
@@ -33,7 +33,7 @@ class HighestPoint:
         data = rasterio.open(self.__ele_path)
 
         # Create a 5km buffer from the point first, then turn to gdf
-        buffer = self.__user_point.buffer(5000)
+        buffer = self.__user_point.buffer(self.__buffer_range)
         geo = gpd.GeoDataFrame({'geometry': buffer}, index=[0], crs="EPSG:27700")
 
         # Function to parse features from GeoDataFrame in such a manner that rasterio wants them
