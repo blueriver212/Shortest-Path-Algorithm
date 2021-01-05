@@ -5,9 +5,15 @@ import pyproj
 
 class GoogleMaps():
     def __init__(self, address):
+        """
+        This class will return a shapely point from a google maps search. You can search in any format
+        that you like an example (has to be a string): 'Blackwater, Newport, PO30 3BJ'
+        :param address: A string of a google maps search
+        """
         self.__address = address
 
     def get_shapely_point(self):
+        # This is a personal key, and will expire halfway through Feb 2021
         API_KEY = 'AIzaSyAbfly5_3lPTuaianFfWqrBFFP_NH6GsAU'
 
         params = {
