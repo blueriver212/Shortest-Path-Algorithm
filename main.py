@@ -20,48 +20,49 @@ class UserInput:
         self.root = tk.Tk()
         self.root.title('Welcome to files choose system!')
         self.root.geometry('550x250')
+        self.lb5 = tk.Label(self.root, text="Operate guide: first you need to choose four work file,according\nto the prompt on the button to choose the corresponding file, then\nchoose to input your coordinate or address, click the corresponding\nbutton. Further instructions will follow when the input work file\n is completed and the input coordinates or addresses are selected.", bg='white', anchor="center", justify="left", fg="red", heigh=6, width=61).place(x=50, y=65)
         self.bt1 = tk.Button(
             self.root,
             text='Insert Coordinate',
             height=1,
             width=18,
             command=self.insert_coord)
-        self.bt1.place(x=350, y=150)
+        self.bt1.place(x=350, y=180)
         self.bt2 = tk.Button(
             self.root,
             text='Choose your asc file',
             height=1,
             width=18,
             command=self.get_asc)
-        self.bt2.place(x=50, y=50)
+        self.bt2.place(x=50, y=20)
         self.bt3 = tk.Button(
             self.root,
             text='Choose your shape file',
             height=1,
             width=18,
             command=self.get_shp)
-        self.bt3.place(x=200, y=50)
+        self.bt3.place(x=200, y=20)
         self.bt4 = tk.Button(
             self.root,
             text='Choose your json file',
             height=1,
             width=18,
             command=self.get_json)
-        self.bt4.place(x=350, y=50)
+        self.bt4.place(x=350, y=20)
         self.bt5 = tk.Button(
             self.root,
             text='Choose your tif file',
             height=1,
             width=18,
             command=self.get_tif)
-        self.bt5.place(x=50, y=150)
+        self.bt5.place(x=50, y=180)
         self.bt6 = tk.Button(
             self.root,
             text='Insert Address',
             height=1,
             width=18,
             command=self.insert_addr)
-        self.bt6.place(x=200, y=150)
+        self.bt6.place(x=200, y=180)
         self.coord_e = ''
         self.coord_n = ''
         self.shp_file = ''
@@ -108,6 +109,9 @@ class UserInput:
         self.lb3 = tk.Label(self.insert_coord,
                             text='Please insert your escape radius: \n System suggest radius is 5000m').place(x=10,
                                                                                                               y=75)
+        self.lb6 = tk.Label(self.insert_coord,
+                            text="Please enter your latitude and longitude coordinates on the island.\nExample:      X Coordinate:439619       Y coordinate:85800 \nAfter the input is completed, click the Insert button. If the prompt is successful,\nclick the Go Running button.Otherwise, please enter the correct address.\nIf you want to enter the coordinates again, please click the Reset button.\nIf you want to enter the address, please click the Exit button first",
+                            bg='white', anchor="center", justify="left", fg="red", heigh=6, width=61).place(x=50, y=110)
         self.getx = tk.Entry(self.insert_coord)
         self.getx.place(x=250, y=15)
         self.gety = tk.Entry(self.insert_coord)
@@ -120,13 +124,13 @@ class UserInput:
         self.getradius.place(x=250, y=80)
         self.bt7 = tk.Button(self.insert_coord, text='Insert your coordinate', height=1, width=18,
                              command=self.user_coord)
-        self.bt7.place(x=50, y=150)
+        self.bt7.place(x=50, y=210)
         self.bt8 = tk.Button(self.insert_coord, text='Reset your coordinate', height=1, width=18,
                              command=self.reset_coord)
-        self.bt8.place(x=200, y=150)
+        self.bt8.place(x=200, y=210)
         self.bt9 = tk.Button(self.insert_coord, text='Insert escape radius', height=1, width=18,
                              command=self.insert_radius)
-        self.bt9.place(x=350, y=150)
+        self.bt9.place(x=350, y=210)
         self.bt10 = tk.Button(
             self.insert_coord,
             text='Go running',
@@ -167,26 +171,29 @@ class UserInput:
         self.insert_addr = tk.Toplevel(self.root)
         self.insert_addr.title('Please insert address!')
         self.insert_addr.geometry('550x300')
-        self.lb4 = tk.Label(self.insert_addr,
-                            text='Please insert your escape radius: \n System suggest radius is 5000m').place(x=10,
-                                                                                                              y=75)
+        self.lb7 = tk.Label(self.insert_addr,
+                            text='Please insert your escape radius: \nSystem suggest radius is 5000m').place(x=10,
+                                                                                                              y=45)
+        self.lb8 = tk.Label(self.insert_addr,
+                            text="Please enter your address on the island.\nExample:      Address: BlacKwater, Newport, PO30 3BJ\nAfter the input is completed, click the Insert button. If the prompt is successful,\nclick the Go Running button to escape.\nOtherwise, please enter the correct address.\nIf you want to enter the address again, please click the Reset button.\nIf you want to enter the coordinates, please click the Exit button first",
+                            bg='white', anchor="center", justify="left", fg="red", heigh=7, width=61).place(x=50, y=100)
         self.bt12 = tk.Button(
             self.insert_addr,
             text='Insert your address',
             height=1,
             width=18,
             command=self.user_addr)
-        self.bt12.place(x=50, y=150)
+        self.bt12.place(x=50, y=220)
         self.bt13 = tk.Button(
             self.insert_addr,
             text='Reset your address',
             height=1,
             width=18,
             command=self.reset_addr)
-        self.bt13.place(x=200, y=150)
+        self.bt13.place(x=200, y=220)
         self.bt14 = tk.Button(self.insert_addr, text='Insert escape radius', height=1, width=18,
                               command=self.insert_radius)
-        self.bt14.place(x=350, y=150)
+        self.bt14.place(x=350, y=220)
         self.bt15 = tk.Button(
             self.insert_addr,
             text='Go running',
@@ -206,7 +213,7 @@ class UserInput:
         self.getradius = tk.Entry(
             self.insert_addr,
             textvariable=default_radius)
-        self.getradius.place(x=250, y=80)
+        self.getradius.place(x=250, y=50)
         default_addr = tk.StringVar()
         default_addr.set('eg: Blackwater, Newport, PO30 3BJ')
         self.getaddr = tk.Entry(
