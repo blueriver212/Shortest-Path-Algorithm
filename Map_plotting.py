@@ -1,11 +1,7 @@
-
 import matplotlib.pyplot as plt
-import networkx as nx
 import rasterio
 import numpy as np
-import geopandas as gpd
 from cartopy import crs
-from shapely.geometry import LineString
 from mpl_toolkits.axes_grid1.anchored_artists import AnchoredSizeBar
 import matplotlib.font_manager as fm
 import matplotlib.patches as mpatches
@@ -15,7 +11,7 @@ from shapely.geometry import Point
 
 class MapPlotting:
 
-    def __init__(self, bg_path, path, user_input, highest_point, nearest_node, highest_node,clipped_path):
+    def __init__(self, bg_path, path, user_input, highest_point, nearest_node, highest_node, clipped_path):
         self.bg_path = bg_path
         self.path = path
         self.fig = plt.figure(figsize=(3, 3), dpi=300)
@@ -28,7 +24,7 @@ class MapPlotting:
         self.background = rasterio.open(self.bg_path)
         self.back_array = self.background.read(1)
 
-    def plot_map(self,buffer_area):
+    def plot_map(self, buffer_area):
         """
         Draw the shortest route from the nearest node to the highest node in the buffer, the base map, your position,
         your target position, legend, scale, elevation, etc.
@@ -41,7 +37,8 @@ class MapPlotting:
         background_image = palette[self.back_array]
         bounds = self.background.bounds
         extent = [bounds.left, bounds.right, bounds.bottom, bounds.top]
-        display_extent = [self.user_input.x-buffer_area, self.user_input.x+buffer_area, self.user_input.y-buffer_area, self.user_input.y+buffer_area]
+        display_extent = [self.user_input.x-buffer_area, self.user_input.x+buffer_area, self.user_input.y-buffer_area,
+                          self.user_input.y+buffer_area]
         self.ax.imshow(background_image, origin='upper', extent=extent, zorder=0)
         self.ax.set_extent(display_extent, crs=crs.OSGB())
 
@@ -59,20 +56,18 @@ class MapPlotting:
         clipped_array[clipped_array == 0] = np.NAN
         ele_bounds = self.clipped_ele.bounds
         ele_extent = [ele_bounds.left, ele_bounds.right, ele_bounds.bottom, ele_bounds.top]
-        ele_show = self.ax.imshow(clipped_array, interpolation='nearest', extent=ele_extent, origin="upper",
-                  cmap='terrain', zorder=3, alpha=0.3)
+        ele_show = self.ax.imshow(clipped_array,
+                                  interpolation='nearest', extent=ele_extent, origin="upper",
+                                  cmap='terrain', zorder=3, alpha=0.3)
         elebar = plt.colorbar(ele_show, fraction=0.07, pad=0.1)
         elebar.ax.tick_params(labelsize=4)
 
         # plot the scale bar,
         fontprops = fm.FontProperties(size=4)
         scalebar = AnchoredSizeBar(self.ax.transData,
-                                   2000, '2 km', 'lower left',
-                                   pad=0.7,
-                                   color='black',
-                                   frameon=False,
-                                   size_vertical=8,
-                                   fontproperties=fontprops,)
+                                   2000, '2 km', loc=4,
+                                   pad=0.7, color='black', frameon=False,
+                                   size_vertical=8, fontproperties=fontprops,)
         self.ax.add_artist(scalebar)
 
         # plot the north arrow
@@ -90,12 +85,10 @@ class MapPlotting:
         top = [minx + xlen * loc_x, miny + ylen * (loc_y - pad + height)]
         center = [minx + xlen * loc_x, left[1] + (top[1] - left[1]) * .4]
         triangle = mpatches.Polygon([left, top, right, center], color='k')
-        self.ax.text(s='N',
-                x=minx + xlen * loc_x,
-                y=miny + ylen * (loc_y - pad + height) * 1.02,
-                fontsize=6,
-                horizontalalignment='center',
-                verticalalignment='bottom')
+        self.ax.text(
+            s='N',
+            x=minx + xlen * loc_x, y=miny + ylen * (loc_y - pad + height) * 1.02,
+            fontsize=6, horizontalalignment='center', verticalalignment='bottom')
         self.ax.add_patch(triangle)
 
         # plot the legend
@@ -103,8 +96,9 @@ class MapPlotting:
         self.ax.legend(handles, labels)
         buffer_l = mpatches.Patch(color="purple", alpha=0.1, label="5km Area")
         shortest_line = mlines.Line2D([], [], linewidth=1, color="blue", markersize=8, label="Shortest Path")
-        plt.legend([buffer_l,shortest_line,your_location,highest_p,nearest_n,highest_n],
-                   ["Buffer area","The shortest path", "Your location", "The highest point", "The nearest node","The highest node"],
+        plt.legend([buffer_l, shortest_line, your_location, highest_p, nearest_n, highest_n],
+                   ["Buffer area", "The shortest path", "Your location", "The highest point", "The nearest node",
+                    "The highest node"],
                    loc="upper left", fontsize=4)
 
         # plot title
@@ -113,14 +107,14 @@ class MapPlotting:
 
         return
 
-    def plot_drive_path(self,path):
+    def plot_drive_path(self, path):
         """
         Draw a route to the highest point on the island using transportation
         :param path:
         :return:
         """
         highest_point_island = Point(456967.5, 78547.5)
-        highest_node = Point(456960.316,78564.546)
+        highest_node = Point(456960.316, 78564.546)
         fig = plt.figure(figsize=(3, 3), dpi=300)
         ax = fig.add_subplot(1, 1, 1, projection=crs.OSGB())
 
@@ -144,12 +138,9 @@ class MapPlotting:
         # plot the scale bar,
         fontprops = fm.FontProperties(size=4)
         scalebar = AnchoredSizeBar(ax.transData,
-                                   5000, '20 km', 'lower left',
-                                   pad=0.7,
-                                   color='black',
-                                   frameon=False,
-                                   size_vertical=8,
-                                   fontproperties=fontprops, )
+                                   5000, '20 km',
+                                   loc=4, pad=0.7, color='black', frameon=False,
+                                   size_vertical=8, fontproperties=fontprops, )
         ax.add_artist(scalebar)
 
         # plot the north arrow
@@ -167,23 +158,19 @@ class MapPlotting:
         top = [minx + xlen * loc_x, miny + ylen * (loc_y - pad + height)]
         center = [minx + xlen * loc_x, left[1] + (top[1] - left[1]) * .4]
         triangle = mpatches.Polygon([left, top, right, center], color='k')
-        ax.text(s='N',
-                     x=minx + xlen * loc_x,
-                     y=miny + ylen * (loc_y - pad + height) * 1.02,
-                     fontsize=6,
-                     horizontalalignment='center',
-                     verticalalignment='bottom')
+        ax.text(
+            s='N',
+            x=minx + xlen * loc_x, y=miny + ylen * (loc_y - pad + height) * 1.02,
+            fontsize=6, horizontalalignment='center', verticalalignment='bottom')
         ax.add_patch(triangle)
 
         # plot the legend
         handles, labels = ax.get_legend_handles_labels()
         ax.legend(handles, labels)
-        buffer_l = mpatches.Patch(color="purple", alpha=0.1, label="5km Area")
         shortest_line = mlines.Line2D([], [], linewidth=1, color="blue", markersize=8, label="Shortest Path")
         plt.legend([shortest_line, your_location, highest_p, nearest_n, highest_n],
-                   [ "The shortest path", "Your location", "The highest point", "The nearest node",
-                    "The highest node"],
-                   loc="upper left", fontsize=4)
+                   ["The shortest path", "Your location", "The highest point", "The nearest node", "The highest node"],
+                   loc="upper left", fontsize=3)
 
         # plot title
         plt.title("Emergency Path Planning (by vehicle)", fontsize=8)
@@ -191,11 +178,3 @@ class MapPlotting:
         plt.show()
 
         return
-
-
-
-
-
-
-
-
