@@ -1,7 +1,7 @@
 from nearest_ITN import *
 from error_handling import *
 from highest_point import *
-from GUI import *
+#from GUI import *
 from shortestpath import *
 from Map_plotting import *
 from task6 import *
@@ -312,34 +312,30 @@ class UserInput:
         x_coord = self.getx.get()
         y_coord = self.gety.get()
         if x_coord != "" and y_coord != "":
-            try:
-                x = float(x_coord)
-                y = float(y_coord)
-                if (425000 < x < 470000) and (75000 < y < 100000):
+            x = float(x_coord)
+            y = float(y_coord)
+            if (425000 < x < 470000) and (75000 < y < 100000):
+                tk.messagebox.showinfo(
+                    title='Welcome', message='Your coordinate is within the study area!')
+                self.coord_e = x
+                self.coord_n = y
+                coord_pt = Point(self.coord_e, self.coord_n)
+                island_path = self.shp_file
+                inisl = InIsland(coord_pt, island_path)
+                if inisl.is_inside() is True:
+                    self.pt = coord_pt
                     tk.messagebox.showinfo(
-                        title='Welcome', message='Your coordinate is within the study area!')
-                    self.coord_e = x
-                    self.coord_n = y
-                    self.pt = Point(self.coord_e, self.coord_n)
-                    island_path = self.shp_file
-                    inisl = InIsland(self.pt, island_path)
-                    if inisl.is_inside() is True:
-                        tk.messagebox.showinfo(
-                            title='Congratulations',
-                            message='You are confirmed to be on the island!')
-                        return self.pt
-                    else:
-                        tk.messagebox.showinfo(
+                        title='Congratulations',
+                        message='You are confirmed to be on the island!')
+                    return
+                else:
+                    tk.messagebox.showinfo(
                             title='Sorry',
                             message='Your position is on the sea, Please check it! \n The programme will stop, insert right coordinate or address')
-                        self.insert_coord.destroy()
-                else:
-                    tk.messagebox.showinfo(title='Error',
-                                           message='Sorry! Your coordinate is not within the tif area!')
-                    return
-            except BaseException:
-                tk.messagebox.showerror(
-                    title='Error', message='Sorry! Please input it in correct number type!')
+                    exit()
+            else:
+                tk.messagebox.showinfo(title='Error',
+                                        message='Sorry! Your coordinate is not within the tif area!')
                 return
         elif x_coord == "" or y_coord == "":
             tk.messagebox.showerror(title='Error',
@@ -358,7 +354,7 @@ class UserInput:
                 title='Congratulations',
                 message='You are confirmed to be on the island! Prepare to run!')
             self.pt = addr_pt
-            return self.pt
+            return
         else:
             tk.messagebox.showwarning(
                 title='Please confirm your address',
