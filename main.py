@@ -1,7 +1,6 @@
 from nearest_ITN import *
 from error_handling import *
 from highest_point import *
-#from GUI import *
 from shortestpath import *
 from Map_plotting import *
 from task6 import *
@@ -20,7 +19,17 @@ class UserInput:
         self.root = tk.Tk()
         self.root.title('Welcome to files choose system!')
         self.root.geometry('550x250')
-        self.lb5 = tk.Label(self.root, text="Operate guide: first you need to choose four work file,according\nto the prompt on the button to choose the corresponding file, then\nchoose to input your coordinate or address, click the corresponding\nbutton. Further instructions will follow when the input work file\n is completed and the input coordinates or addresses are selected.", bg='white', anchor="center", justify="left", fg="red", heigh=6, width=61).place(x=50, y=65)
+        self.lb1 = tk.Label(
+            self.root,
+            text="Operate guide: first you need to choose four work file,when the four choose\nfile buttons turn green, your are do it right then choose to input your coordinate\nor address, click the corresponding button. If you do not choose the whole four\nwork files the corresponding button will be white or red!\nFuther instructions will be show after you choose address or coordinate.",
+            bg='white',
+            anchor="center",
+            justify="left",
+            fg="red",
+            heigh=6,
+            width=61).place(
+            x=50,
+            y=65)
         self.bt1 = tk.Button(
             self.root,
             text='Insert Coordinate',
@@ -70,6 +79,7 @@ class UserInput:
         self.tif_file = ''
         self.json_file = ''
         self.pt = ''
+        self.get_radius = ''
 
     def insert_coord(self):
         if self.shp_file == '':
@@ -93,58 +103,58 @@ class UserInput:
                 message='There is no tif.file, please input tif.file')
             return
 
-        self.insert_coord = tk.Toplevel(self.root)
-        self.insert_coord.title('Please insert coordinate!')
-        self.insert_coord.geometry('550x300')
-        self.lb1 = tk.Label(
-            self.insert_coord,
+        insert_coord = tk.Toplevel(self.root)
+        insert_coord.title('Please insert coordinate!')
+        insert_coord.geometry('550x300')
+        lb2 = tk.Label(
+            insert_coord,
             text='Your location X coordinate:').place(
             x=10,
             y=15)
-        self.lb2 = tk.Label(
-            self.insert_coord,
+        lb3 = tk.Label(
+            insert_coord,
             text='Your location Y coordinate:').place(
             x=10,
             y=45)
-        self.lb3 = tk.Label(self.insert_coord,
-                            text='Please insert your escape radius: \n System suggest radius is 5000m').place(x=10,
-                                                                                                              y=75)
-        self.lb6 = tk.Label(self.insert_coord,
-                            text="Please enter your latitude and longitude coordinates on the island.\nExample:      X Coordinate:439619       Y coordinate:85800 \nAfter the input is completed, click the Insert button. If the prompt is successful,\nclick the Go Running button.Otherwise, please enter the correct address.\nIf you want to enter the coordinates again, please click the Reset button.\nIf you want to enter the address, please click the Exit button first",
-                            bg='white', anchor="center", justify="left", fg="red", heigh=6, width=61).place(x=50, y=110)
-        self.getx = tk.Entry(self.insert_coord)
+        lb4 = tk.Label(insert_coord,
+                       text='Please insert your escape radius:\nSystem suggest radius is 5000m').place(x=10,
+                                                                                                       y=75)
+        lb5 = tk.Label(insert_coord,
+                       text="Please enter your latitude and longitude coordinates on the island.\nExample:      X Coordinate:439619       Y coordinate:85800 \nAfter the input is completed, click the Insert button. If the prompt is successful,\nclick the Go Running button.Otherwise, please enter the correct coordinate.\nIf you want to enter the coordinates again, please click the Reset button.\nIf you want to enter the address, please click the Exit button first",
+                       bg='white', anchor="center", justify="left", fg="red", heigh=6, width=61).place(x=50, y=110)
+        self.getx = tk.Entry(insert_coord)
         self.getx.place(x=250, y=15)
-        self.gety = tk.Entry(self.insert_coord)
+        self.gety = tk.Entry(insert_coord)
         self.gety.place(x=250, y=45)
         default_radius = tk.StringVar()
         default_radius.set('5000')
         self.getradius = tk.Entry(
-            self.insert_coord,
+            insert_coord,
             textvariable=default_radius)
         self.getradius.place(x=250, y=80)
-        self.bt7 = tk.Button(self.insert_coord, text='Insert your coordinate', height=1, width=18,
-                             command=self.user_coord)
-        self.bt7.place(x=50, y=210)
-        self.bt8 = tk.Button(self.insert_coord, text='Reset your coordinate', height=1, width=18,
-                             command=self.reset_coord)
-        self.bt8.place(x=200, y=210)
-        self.bt9 = tk.Button(self.insert_coord, text='Insert escape radius', height=1, width=18,
-                             command=self.insert_radius)
-        self.bt9.place(x=350, y=210)
-        self.bt10 = tk.Button(
-            self.insert_coord,
+        bt7 = tk.Button(insert_coord, text='Insert your coordinate', height=1, width=18,
+                        command=self.user_coord)
+        bt7.place(x=50, y=210)
+        bt8 = tk.Button(insert_coord, text='Reset your coordinate', height=1, width=18,
+                        command=self.reset_coord)
+        bt8.place(x=200, y=210)
+        bt9 = tk.Button(insert_coord, text='Insert escape radius', height=1, width=18,
+                        command=self.insert_radius)
+        bt9.place(x=350, y=210)
+        bt10 = tk.Button(
+            insert_coord,
             text='Go running',
             height=1,
             width=18,
             command=self.gorunning)
-        self.bt10.place(x=200, y=250)
-        self.bt11 = tk.Button(
-            self.insert_coord,
+        bt10.place(x=200, y=250)
+        bt11 = tk.Button(
+            insert_coord,
             text='Exit this window',
             height=1,
             width=18,
             command=self.close)
-        self.bt11.place(x=350, y=250)
+        bt11.place(x=350, y=250)
 
     def insert_addr(self):
         if self.shp_file == '':
@@ -168,56 +178,56 @@ class UserInput:
                 message='There is no tif.file, please input tif.file')
             return
 
-        self.insert_addr = tk.Toplevel(self.root)
-        self.insert_addr.title('Please insert address!')
-        self.insert_addr.geometry('550x300')
-        self.lb7 = tk.Label(self.insert_addr,
-                            text='Please insert your escape radius: \nSystem suggest radius is 5000m').place(x=10,
-                                                                                                              y=45)
-        self.lb8 = tk.Label(self.insert_addr,
-                            text="Please enter your address on the island.\nExample:      Address: BlacKwater, Newport, PO30 3BJ\nAfter the input is completed, click the Insert button. If the prompt is successful,\nclick the Go Running button to escape.\nOtherwise, please enter the correct address.\nIf you want to enter the address again, please click the Reset button.\nIf you want to enter the coordinates, please click the Exit button first",
-                            bg='white', anchor="center", justify="left", fg="red", heigh=7, width=61).place(x=50, y=100)
-        self.bt12 = tk.Button(
-            self.insert_addr,
+        insert_addr = tk.Toplevel(self.root)
+        insert_addr.title('Please insert address!')
+        insert_addr.geometry('550x300')
+        lb6 = tk.Label(insert_addr,
+                       text='Please insert your escape radius:\nSystem suggest radius is 5000m').place(x=10,
+                                                                                                       y=45)
+        lb7 = tk.Label(insert_addr,
+                       text="Please enter your address on the island.\nExample:      Address: Blackwater, Newport, PO30 3BJ\nAfter the input is completed, click the Insert button. If the prompt is successful,\nclick the Go Running button to escape.\nOtherwise, please enter the correct address.\nIf you want to enter the address again, please click the Reset button.\nIf you want to enter the coordinates, please click the Exit button first",
+                       bg='white', anchor="center", justify="left", fg="red", heigh=7, width=61).place(x=50, y=100)
+        bt12 = tk.Button(
+            insert_addr,
             text='Insert your address',
             height=1,
             width=18,
             command=self.user_addr)
-        self.bt12.place(x=50, y=220)
-        self.bt13 = tk.Button(
-            self.insert_addr,
+        bt12.place(x=50, y=220)
+        bt13 = tk.Button(
+            insert_addr,
             text='Reset your address',
             height=1,
             width=18,
             command=self.reset_addr)
-        self.bt13.place(x=200, y=220)
-        self.bt14 = tk.Button(self.insert_addr, text='Insert escape radius', height=1, width=18,
-                              command=self.insert_radius)
-        self.bt14.place(x=350, y=220)
-        self.bt15 = tk.Button(
-            self.insert_addr,
+        bt13.place(x=200, y=220)
+        bt14 = tk.Button(insert_addr, text='Insert escape radius', height=1, width=18,
+                         command=self.insert_radius)
+        bt14.place(x=350, y=220)
+        bt15 = tk.Button(
+            insert_addr,
             text='Go running',
             height=1,
             width=18,
             command=self.gorunning)
-        self.bt15.place(x=200, y=250)
-        self.bt16 = tk.Button(
-            self.insert_addr,
+        bt15.place(x=200, y=250)
+        bt16 = tk.Button(
+            insert_addr,
             text='Exit this window',
             height=1,
             width=18,
             command=self.close)
-        self.bt16.place(x=350, y=250)
+        bt16.place(x=350, y=250)
         default_radius = tk.StringVar()
         default_radius.set('5000')
         self.getradius = tk.Entry(
-            self.insert_addr,
+            insert_addr,
             textvariable=default_radius)
         self.getradius.place(x=250, y=50)
         default_addr = tk.StringVar()
         default_addr.set('eg: Blackwater, Newport, PO30 3BJ')
         self.getaddr = tk.Entry(
-            self.insert_addr,
+            insert_addr,
             width=60,
             textvariable=default_addr)
         self.getaddr.place(x=50, y=15)
@@ -230,7 +240,7 @@ class UserInput:
 
         # TASK 2
 
-        self.pt = Point(self.coord_e, self.coord_n)
+        # self.pt = Point(self.coord_e, self.coord_n)
         root = os.path.dirname(os.getcwd())
         island_path = self.shp_file
         elevation_path = self.asc_file
@@ -238,19 +248,18 @@ class UserInput:
 
         # Task 6
         # Testing whether the user point is on the island.
-        inisl = InIsland(self.pt, island_path)
-        if inisl.is_inside() is True:
-            print('You are confirmed to be on the island! \n'
-                  'The software will continue')
-        else:
-            print('Unfortunately, you are not on the Isle of Wight, so this program cannot help you. \n'
-                  'This software is now shutting down')
-            sys.exit()
+        # inisl = InIsland(self.pt, island_path)
+        # if inisl.is_inside() is True:
+        #     print('You are confirmed to be on the island! \n'
+        #           'The software will continue')
+        # else:
+        #     print('Unfortunately, you are not on the Isle of Wight, so this program cannot help you. \n'
+        #           'This software is now shutting down')
+        #     sys.exit()
 
-        buffer_range = float(
-            input("please input the radius of your buffer area:"))
+        buffer_range = self.get_radius
         out_loc = r'clip.tif'
-        print(f'Clipping your input raster to a {buffer_range}km Buffer...')
+        print(f'Clipping your input raster to a {buffer_range}m Buffer...')
         hp = HighestPoint(
             self.pt,
             island_path,
@@ -312,8 +321,13 @@ class UserInput:
         x_coord = self.getx.get()
         y_coord = self.gety.get()
         if x_coord != "" and y_coord != "":
-            x = float(x_coord)
-            y = float(y_coord)
+            try:
+                x = float(x_coord)
+                y = float(y_coord)
+            except BaseException:
+                tk.messagebox.showerror(
+                    title='Wrong insert type',
+                    message='Please insert your coordinates in number!')
             if (425000 < x < 470000) and (75000 < y < 100000):
                 tk.messagebox.showinfo(
                     title='Welcome', message='Your coordinate is within the study area!')
@@ -330,12 +344,12 @@ class UserInput:
                     return
                 else:
                     tk.messagebox.showinfo(
-                            title='Sorry',
-                            message='Your position is on the sea, Please check it! \n The programme will stop, insert right coordinate or address')
+                        title='Sorry',
+                        message='Your position is on the sea, Please check it! \n The programme will stop, insert right coordinate or address')
                     exit()
             else:
                 tk.messagebox.showinfo(title='Error',
-                                        message='Sorry! Your coordinate is not within the tif area!')
+                                       message='Sorry! Your coordinate is not within the tif area!')
                 return
         elif x_coord == "" or y_coord == "":
             tk.messagebox.showerror(title='Error',
@@ -344,7 +358,12 @@ class UserInput:
 
     def user_addr(self):
         address_get = self.getaddr.get()
-        address = str(address_get)
+        try:
+            address = str(address_get)
+        except BaseException:
+            tk.messagebox.showerror(
+                title='Wrong insert type',
+                message='Please insert your address in string!')
         pt_finder = GoogleMaps(address)
         addr_pt = pt_finder.get_shapely_point()
         island_path = self.shp_file
@@ -371,7 +390,11 @@ class UserInput:
         return
 
     def insert_radius(self):
-        self.get_radius = float(self.getradius.get())
+        try:
+            self.get_radius = float(self.getradius.get())
+        except BaseException:
+            tk.messagebox.showerror(
+                title='Error', message='Please insert a number!')
         return
 
     def close(self):
@@ -384,24 +407,40 @@ class UserInput:
         filetypes = [("shape_file", "*.shp")]
         self.shp_file = filedialog.askopenfilename(
             title='Please choose your .shp work file', filetypes=filetypes)
+        if self.shp_file != '':
+            self.bt3.configure(bg='green')
+        else:
+            self.bt3.configure(bg='red')
         return
 
     def get_json(self):
         filetypes = [("itn_file", "*.json")]
         self.json_file = filedialog.askopenfilename(
             title='Please choose your .json work file', filetypes=filetypes)
+        if self.jason_file != '':
+            self.bt4.configure(bg='green')
+        else:
+            self.bt4.configure(bg='red')
         return
 
     def get_asc(self):
         filetypes = [("asc_file", "*.asc")]
         self.asc_file = filedialog.askopenfilename(
             title='Please choose your .shp work file', filetypes=filetypes)
+        if self.asc_file != '':
+            self.bt2.configure(bg='green')
+        else:
+            self.bt2.configure(bg='red')
         return
 
     def get_tif(self):
         filetypes = [("tif_file", "*.tif")]
         self.tif_file = filedialog.askopenfilename(
             title='Please choose your .tif work file', filetypes=filetypes)
+        if self.tif_file != '':
+            self.bt5.configure(bg='green')
+        else:
+            self.bt5.configure(bg='red')
         return
 
 
