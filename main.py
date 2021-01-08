@@ -333,8 +333,7 @@ class UserInput:
 
         # Get the error handling from sep document
         json_file = Errors.json_input()
-        itn = ITN(json_file)
-        # idx = itn.maketree()[0]
+        itn = ITN(json_file,self.pt, buffer_range)
 
         str_3 = 'Calculating the nearest road nodes to you...'
         self.text.insert(3.1, str_3)
@@ -345,19 +344,20 @@ class UserInput:
         node_set = itn.make_tree()[1]
         node_near_user = itn.nearest_node(self.pt)
         node_near_high_point = itn.nearest_node(highest_point_in_area)
-        # nearest_node = Point(node_set[node_near_user[0]][1])
-        # highest_node = Point(node_set[node_near_high_point[0]][1])
+        nearest_node = Point(node_set[node_near_user[0]][1])
+        highest_node = Point(node_set[node_near_high_point[0]][1])
         str_4 = f'The node nearest you is {node_near_user} \n ' \
                 f'The node nearest to the highest point is {node_near_high_point}'
         self.text.insert(4.1, str_4)
 
         nr = NearestRoad(
-            elevation_path,
+            clipped_path,
             self.pt,
             node_near_user,
             node_near_high_point,
             user_itn,
-            node_set)
+            node_set,
+            self.get_radius)
 
         g = nr.get_road_walk()
         str_5 = f'The road of your journey is: {g}'
@@ -368,8 +368,6 @@ class UserInput:
         # TASK 5
         # plot background
         bg_path = self.tif_file
-        nearest_node = Point(node_set[node_near_user[0]][1])
-        highest_node = Point(node_set[node_near_high_point[0]][1])
         plot = MapPlotting(
             bg_path,
             dijkstra,
@@ -423,8 +421,7 @@ class UserInput:
 
         # Get the error handling from sep document
         json_file = Errors.json_input()
-        itn = ITN(json_file)
-        # idx = itn.maketree()[0]
+        itn = ITN(json_file, self.pt, buffer_range)
 
         str_3 = 'Calculating the nearest road nodes to you...'
         self.text.insert(3.1, str_3)
@@ -435,20 +432,21 @@ class UserInput:
         node_set = itn.make_tree()[1]
         node_near_user = itn.nearest_node(self.pt)
         node_near_high_point = itn.nearest_node(highest_point_in_area)
-        # nearest_node = Point(node_set[node_near_user[0]][1])
-        # highest_node = Point(node_set[node_near_high_point[0]][1])
+        nearest_node = Point(node_set[node_near_user[0]][1])
+        highest_node = Point(node_set[node_near_high_point[0]][1])
         str_4 = f'The node nearest you is {node_near_user} \n ' \
                 f'The node nearest to the highest point is {node_near_high_point}'
         self.text.insert(4.1, str_4)
 
 
         nr = NearestRoad(
-            elevation_path,
+            clipped_path,
             self.pt,
             node_near_user,
             node_near_high_point,
             user_itn,
-            node_set)
+            node_set
+            buffer_range)
 
         g = nr.get_road_walk()
         str_5 = f'The road of your journey is: {g}'
@@ -459,8 +457,6 @@ class UserInput:
         # TASK 5
         # plot background
         bg_path = self.tif_file
-        nearest_node = Point(node_set[node_near_user[0]][1])
-        highest_node = Point(node_set[node_near_high_point[0]][1])
         plot = MapPlotting(
             bg_path,
             dijkstra,
@@ -568,10 +564,11 @@ class UserInput:
         :return:
         """
         try:
-            self.get_radius = float(self.getradius.get())
+            get_radius_1 = float(self.getradius.get())
         except BaseException:
             tk.messagebox.showerror(
                 title='Error', message='Please insert a number!')
+        self.get_radius = get_radius_1
         return
 
     def get_shp(self):
