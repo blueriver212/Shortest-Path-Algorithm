@@ -1,6 +1,7 @@
 import requests
 from shapely.geometry import Point
 import pyproj
+import geopandas as gpd
 
 
 class GoogleMaps():

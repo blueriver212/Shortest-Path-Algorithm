@@ -10,12 +10,13 @@ import numpy as np
 
 class HighestPoint:
 
-    def __init__(self, user_point, island_path, ele_path, out_loc,buffer_range):
+    def __init__(self, user_point, island_path, ele_path, out_loc, buffer_range):
         self.__user_point = user_point
         self.__island_path = island_path
         self.__ele_path = ele_path
         self.__out_loc = out_loc
-        self.__buffer_range= buffer_range
+        self.__buffer_range = buffer_range
+
     def read_island(self):
         island_file = gpd.read_file(self.__island_path)
         return island_file
@@ -53,11 +54,7 @@ class HighestPoint:
 
         with rasterio.open(out_tif, 'w', **out_meta) as dest:
             dest.write(out_image)
-        # Plotting out file
-        clip = rasterio.open(out_tif)
 
-        pyplot.imshow(clip.read(1), cmap="pink")
-        pyplot.show()
         return out_tif
 
     def find_highest_point(self, clipped_path):

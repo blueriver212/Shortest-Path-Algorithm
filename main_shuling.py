@@ -1,8 +1,6 @@
 from nearest_ITN import *
-from error_handling import *
 from shapely.geometry import Point, Polygon
 from highest_point import *
-from GUI import *
 from shortestpath import *
 from Map_plotting import *
 from task6 import *

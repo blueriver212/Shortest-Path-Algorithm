@@ -1,7 +1,6 @@
 # Task 3 - Nearest Integrated Transport Network
 import json
 from rtree import index
-from error_handling import *
 from shapely.geometry import Point
 
 

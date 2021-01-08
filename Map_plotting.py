@@ -175,6 +175,6 @@ class MapPlotting:
         # plot title
         plt.title("Emergency Path Planning (by vehicle)", fontsize=8)
 
-        plt.show()
+        plt.show(block=False)
 
         return
