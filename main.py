@@ -21,14 +21,13 @@ class UserInput:
         """
         self.root = tk.Tk()
         self.root.title('Welcome to files choose system!')
-        self.root.geometry('550x450')
         self.lb1 = tk.Label(
             self.root,
             text="Operate guide: first you need to choose four work file,when the four choose\nfile buttons turn "
                  "green, your are do it right then choose to input your coordinate\nor address, click the "
                  "corresponding button. If you do not choose the whole four\nwork files the corresponding "
                  "button will be white or red!\nFuther instructions will be show after you choose address "
-                 "or coordinate.",
+                 "or coordinate.\nPlease do not type any thing on white area, this area will show your status!",
             bg='white',
             anchor="center",
             justify="left",
@@ -89,6 +88,13 @@ class UserInput:
         self.get_radius = ''
         self.text = tk.Text(self.root, height=12, width=75)
         self.text.place(x=10, y=250)
+        # Root window show in mid screen
+        screenwidth = self.root.winfo_screenwidth()
+        screenheight = self.root.winfo_screenheight()
+        width = 550
+        height = 450
+        midshow = '%dx%d+%d+%d' % (width, height, (screenwidth - width) / 2, (screenheight - height) / 2)
+        self.root.geometry(midshow)
 
     def insert_coord(self):
         """
@@ -141,7 +147,8 @@ class UserInput:
                             "click the Insert button. If the prompt is successful,\nclick the Go Running or By vehicle "
                             "button. Otherwise, please enter the correct coordinate.\nIf you want to enter the "
                             "coordinates again, please click the Reset button.\nIf you want to enter the address, "
-                            "please click the Exit button first",
+                            "please click the Exit button first When you click Go running or By vehicle button\n"
+                            "please check your status in file choose window",
                        bg='white', anchor="center", justify="left", fg="red", heigh=6, width=61).place(x=50, y=110)
         self.getx = tk.Entry(insert_coord)
         self.getx.place(x=250, y=15)
@@ -225,7 +232,8 @@ class UserInput:
                             "PO30 3BJ\nAfter the input is completed, click the Insert button. If the prompt is "
                             "successful,\nclick the Go Running or By vehicle button to escape.\nOtherwise, please enter"
                             "the correct address.\nIf you want to enter the address again, please click the Reset "
-                            "button.\nIf you want to enter the coordinates, please click the Exit button first",
+                            "button.\nIf you want to enter the coordinates, please click the Exit button. When you\n"
+                            "click Go running or By vehicle button please check your status in file choose window",
                        bg='white', anchor="center", justify="left", fg="red", heigh=7, width=61).place(x=50, y=100)
         bt13 = tk.Button(
             insert_addr,
