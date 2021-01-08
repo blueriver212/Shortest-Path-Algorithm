@@ -1,14 +1,16 @@
 # Task 3 - Nearest Integrated Transport Network
 import json
-from shapely.geometry import Point
 from rtree import index
 from error_handling import *
+from shapely.geometry import Point
 
 
 class ITN:
 
-    def __init__(self, file):
+    def __init__(self, file, user_input, buffer_range):
         self.file = file
+        self.user_input = user_input
+        self.buffer_range = buffer_range
 
     def user_itn(self):
         """
@@ -29,12 +31,13 @@ class ITN:
         coord = self.user_itn()
         coord = coord['roadnodes']
         node_set = {}
-        nodename_set = {}
         count = 0
         for point in coord:
-            idx.insert(count, coord[point]['coords'])
-            node_set.update({count:[point,coord[point]['coords'][:2]]})
-            count+=1
+            point_coord = coord[point]['coords'][:2]
+            if Point(tuple(point_coord)).distance(self.user_input) <= self.buffer_range:
+                idx.insert(count, coord[point]['coords'])
+                node_set.update({count: [point, point_coord]})
+                count += 1
 
         return idx, node_set,
 
@@ -47,5 +50,3 @@ class ITN:
         idx = self.make_tree()[0]
         node_nearest_point = list(idx.nearest((point.x, point.y)))
         return node_nearest_point
-
-
