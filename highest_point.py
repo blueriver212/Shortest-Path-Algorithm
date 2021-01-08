@@ -18,17 +18,18 @@ class HighestPoint:
         self.__buffer_range = buffer_range
 
     def read_island(self):
+        """
+        Using Geopandas opens and returns a shapefile
+        :return: A geopandas shapefile
+        """
         island_file = gpd.read_file(self.__island_path)
         return island_file
-
-    @staticmethod
-    def get_features(gdf):
-        return [json.loads(gdf.to_json())['features'][0]['geometry']]
 
     def clip_elevation(self):
         """
         Limit the highest point range to a 5km buffer
-        :return:
+        Code Adapted from: https://rasterio.readthedocs.io/en/latest/topics/masking-by-shapefile.html
+        :return: A string path of the clipped elevation raster file (.tif)
         """
         # Open the main raster
         data = rasterio.open(self.__ele_path)
@@ -60,7 +61,7 @@ class HighestPoint:
     def find_highest_point(self, clipped_path):
         """
         Find the highest point and return the coordinates of the highest point
-        :return:
+        :return: A shapely point of the highest point in an elevation file (EPSG: 27700)
         """
         with rasterio.open(clipped_path, 'r') as ds:
             arr = ds.read(1)  # read all raster values
@@ -70,6 +71,4 @@ class HighestPoint:
             highest_point = Point(highest[0][0], highest[1][0])
             print(f'Your highest point is {highest_point}')
 
-
-
-            return highest_point
+        return highest_point
