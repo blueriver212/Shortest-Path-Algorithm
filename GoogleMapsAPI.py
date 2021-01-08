@@ -39,7 +39,6 @@ class GoogleMaps():
         osgb36 = pyproj.Proj('+init=EPSG:27700')
 
         res = pyproj.transform(wgs84, osgb36, lng, lat)
-
         users_point = Point(res)
 
         return users_point

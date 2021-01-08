@@ -94,7 +94,6 @@ class NearestRoad:
             g_drive,
             source=self.node_set[self.nearest_node][0],
             target="osgb5000005136697688")
-        print(f'Taking vehicles to the highest point in this island may take you {length_drive} minutes')
         links = []
         geom = []
         first_node = path_drive[0]
@@ -105,7 +104,7 @@ class NearestRoad:
             first_node = node
         shortest_path_drive = gpd.GeoDataFrame({'fid': links, 'geometry': geom})
 
-        return shortest_path_drive
+        return shortest_path_drive, length_drive
 
     def get_nearest_path(self, g):
         """
@@ -122,10 +121,7 @@ class NearestRoad:
 
         # If there is no path within the buffer to reach the target node
         # Draw the shortest path partly outside the buffer
-        if length == float("inf"):
-            print("You only have one path partly outside the buffer zone to reach your destination")
-        else:
-            print(f'Walking to the highest point within 5km will takes you {length} minutes')
+
 
         links = []  # this list will be used to populate the feature id (fid) column
         geom = []  # this list will be used to populate the geometry column
@@ -138,4 +134,4 @@ class NearestRoad:
 
         shortest_path_gpd = gpd.GeoDataFrame({'fid': links, 'geometry': geom})
 
-        return shortest_path_gpd
+        return shortest_path_gpd, length

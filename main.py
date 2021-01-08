@@ -97,7 +97,7 @@ class UserInput:
         self.root.geometry(midshow)
 
     def insert_coord(self):
-        global getx, gety, getradius, text_1
+        global getx, gety, getradius, text_2
         """
         Design a user insert coordinate GUI use Insert coordinate button to check the coordinate point position.
         Reset button clear the user insert label. Get radius button to insert the escape radius.
@@ -105,27 +105,7 @@ class UserInput:
         Exit button let user to close the window.
         :return:
         """
-        # if self.shp_file == '':
-        #     tk.messagebox.showwarning(
-        #         title='No shp file',
-        #         message='There is no shp.file, please input shp.file')
-        #     return
-        # if self.json_file == '':
-        #     tk.messagebox.showwarning(
-        #         title='No json file',
-        #         message='There is no json.file, please input json.file')
-        #     return
-        # if self.asc_file == '':
-        #     tk.messagebox.showwarning(
-        #         title='No asc file',
-        #         message='There is no asc.file, please input asc.file')
-        #     return
-        # if self.tif_file == '':
-        #     tk.messagebox.showwarning(
-        #         title='No tif file',
-        #         message='There is no tif.file, please input tif.file')
-        #     return
-        #
+
         insert_coord = tk.Toplevel(self.root)
         insert_coord.title('Please insert your coordinates!')
         insert_coord.geometry('550x500')
@@ -155,7 +135,7 @@ class UserInput:
                             "   please press 'By Vehicle'\n"
                             "\n"
                             "Results of your chosen journey is provided in the original window. \n",
-                       bg='white', anchor="center", justify="left", fg="red", heigh=10, width=61)
+                       bg='white', anchor="center", justify="left", fg="red", height=10, width=61)
         lb5.place(x=50, y=15)
         getx = tk.Entry(insert_coord)
         getx.place(x=250, y=190)
@@ -198,8 +178,8 @@ class UserInput:
             command=insert_coord.destroy)
         bt12.place(x=350, y=340)
 
-        text_1 = tk.Text(insert_coord, width='61', height='6')
-        text_1.place(x=50, y=390)
+        text_2 = tk.Text(insert_coord, width='54', height='6')
+        text_2.place(x=50, y=390)
 
     def insert_addr(self):
         global getaddress, getradius, bt13, text
@@ -317,7 +297,7 @@ class UserInput:
         Finally use Map_plotting(task 5) to plot the escape path.
         :return:
         """
-        global text
+        global text_2
         if self.pt == '':
             tk.messagebox.showwarning(
                 title='Please insert your coordinate or address!',
@@ -344,8 +324,8 @@ class UserInput:
 
         clipped_path = hp.clip_elevation()
         highest_point_in_area = hp.find_highest_point(clipped_path)
-        str_1 = f'The highest point in your area is {highest_point_in_area}'
-        text_1.insert(1.1, str_1)
+        str_1 = f'The highest point in your area is {highest_point_in_area} \n'
+        #text_2.insert(1.1, str_1)
 
         # TASK 3
         # example of input coordinate, this will change when we merge the tasks
@@ -371,16 +351,22 @@ class UserInput:
 
         g = nr.get_road_walk()
         str_2 = f'The road of your journey is: {g}'
-        text_1.insert(2.1, str_2)
+        #text_1.insert(2.1, str_2)
         dijkstra = nr.get_nearest_path(g)
         nr.get_road_drive()
+        if dijkstra[1] == float("inf"):
+            txt_res = "You only have one path partly outside the buffer zone to reach your destination"
+            text_2.insert(3.2, txt_res)
+        else:
+            txt_res_1 = f'Walking to the highest point within 5km will takes you {dijkstra[1]} minutes'
+            #text_2.insert(3.2, txt_res_1)
 
         # TASK 5
         # plot background
         bg_path = self.tif_file
         plot = MapPlotting(
             bg_path,
-            dijkstra,
+            dijkstra[0],
             self.pt,
             highest_point_in_area,
             nearest_node,
@@ -422,7 +408,7 @@ class UserInput:
         clipped_path = hp.clip_elevation()
         highest_point_in_area = hp.find_highest_point(clipped_path)
         str_1 = f'The highest point in your area is {highest_point_in_area}'
-        text_1.insert(1.1, str_1)
+        #text_1.insert(1.1, str_1)
 
         # TASK 3
         # example of input coordinate, this will change when we merge the tasks
@@ -451,9 +437,12 @@ class UserInput:
 
         g = nr.get_road_walk()
         str_2 = f'The road of your journey is: {g}'
-        text_1.insert(2.1, str_2)
+        #text_1.insert(2.1, str_2)
         dijkstra = nr.get_nearest_path(g)
         dijkstra_drive = nr.get_road_drive()
+        length_drive = dijkstra_drive[1]
+        str_drive = f'Taking vehicles to the highest point in this island may take you {length_drive} minutes'
+        ## Needs to be added to the text drive
 
         # TASK 5
         # plot background
@@ -466,7 +455,7 @@ class UserInput:
             nearest_node,
             highest_node,
             clipped_path)
-        plot.plot_drive_path(dijkstra_drive)
+        plot.plot_drive_path(dijkstra_drive[0])
 
     def user_coord(self):
         global getx, gety
