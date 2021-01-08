@@ -1,7 +1,8 @@
 import requests
 from shapely.geometry import Point
 import pyproj
-import geopandas as gpd
+from task6 import *
+from shapely.geometry import Point
 
 
 class GoogleMaps():
@@ -29,11 +30,26 @@ class GoogleMaps():
         lat = geometry['location']['lat']
         lng = geometry['location']['lng']
 
-        bng = pyproj.Proj(init='epsg:27700')
-        wgs84 = pyproj.Proj(init='epsg:4326')
+        # wgs_point = Point(lng, lat)
 
-        res = pyproj.transform(wgs84, bng, lng, lat)
+        #users_point = Point(transformer.transform(wgs84, bng, wgs_point.x, wgs_point.y))
+
+
+        wgs84 = pyproj.Proj('+init=EPSG:4326')
+        osgb36 = pyproj.Proj('+init=EPSG:27700')
+
+        res = pyproj.transform(wgs84, osgb36, lng, lat)
+
         users_point = Point(res)
 
         return users_point
 
+
+if __name__ == "__main__":
+    address = 'Blackwater Mill, Blackwater, Newport, PO30 3BJ'
+    pt_finder = GoogleMaps(address)
+    addr_pt = pt_finder.get_shapely_point()
+
+    island_path = "C:/Users/Windows10Pro/OneDrive - University College London/Desktop/CEGE0096/Material/shape/isle_of_wight.shp"
+    inisl = InIsland(addr_pt, island_path)
+    print(inisl.is_inside())
