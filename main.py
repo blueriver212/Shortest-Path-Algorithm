@@ -541,7 +541,11 @@ class UserInput:
         :return:
         """
         global getradius
-        get_radius_1 = ''
+        get_radius_1 = getradius.get()
+        if get_radius_1 == '':
+            tk.messagebox.showwarning(title='Error',message='Please insert your radius')
+            return
+
         try:
             get_radius_1 = float(getradius.get())
         except NameError:
