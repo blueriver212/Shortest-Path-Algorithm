@@ -446,6 +446,8 @@ class UserInput:
         # Original Task 1, input point.
         x_coord = getx.get()
         y_coord = gety.get()
+        x = ''
+        y = ''
         if x_coord != "" and y_coord != "":
             try:
                 x = float(x_coord)
@@ -488,6 +490,7 @@ class UserInput:
         Check the user input point whether on the island and convert the address to a coordinate point.
         :return:
         """
+        address = ''
         try:
             address = str(getaddress.get())
         except NameError:
@@ -537,6 +540,7 @@ class UserInput:
         :return:
         """
         global getradius
+        get_radius_1 = ''
         try:
             get_radius_1 = float(getradius.get())
         except NameError:
