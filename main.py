@@ -106,11 +106,11 @@ class UserInput:
         :return:
         """
 
-        # if self.shp_file == '' or self.json_file == '' or self.asc_file == '' or self.tif_file == '':
-        #     tk.messagebox.showwarning(
-        #         title='Lack of work file',
-        #         message='Please check your four choose file buttons, follow the instruction and make them turn green.')
-        #     return
+        if self.shp_file == '' or self.json_file == '' or self.asc_file == '' or self.tif_file == '':
+            tk.messagebox.showwarning(
+                title='Lack of work file',
+                message='Please check your four choose file buttons, follow the instruction and make them turn green.')
+            return
 
         insert_coord = tk.Toplevel(self.root)
         insert_coord.title('Please insert your coordinates!')
@@ -196,11 +196,11 @@ class UserInput:
         :return:
         """
 
-        # if self.shp_file == '' or self.json_file == '' or self.asc_file == '' or self.tif_file == '':
-        #     tk.messagebox.showwarning(
-        #         title='Lack of work file',
-        #         message='Please check your four choose file buttons, follow the instruction and make them turn green.')
-        #     return
+        if self.shp_file == '' or self.json_file == '' or self.asc_file == '' or self.tif_file == '':
+            tk.messagebox.showwarning(
+                title='Lack of work file',
+                message='Please check your four choose file buttons, follow the instruction and make them turn green.')
+            return
 
         insert_addr = tk.Toplevel(self.root)
         insert_addr.title('Please insert address!')
