@@ -291,10 +291,6 @@ class UserInput:
             tk.messagebox.showwarning(
                 title='Please insert your coordinate or address!',
                 message='Please insert your coordinate or address!')
-        if self.get_radius == '':
-            tk.messagebox.showwarning(
-                title='Please insert your radius!',
-                message='Please insert your radius!')
 
         # TASK 2
         island_path = self.shp_file
@@ -522,6 +518,7 @@ class UserInput:
         global getx, gety
         getx.delete(0, 'end')
         gety.delete(0, 'end')
+        self.pt = ''
         return
 
     def reset_addr(self):
@@ -531,6 +528,7 @@ class UserInput:
         """
         global getaddress
         getaddress.delete(0, 'end')
+        self.pt = ''
         return
 
     def insert_radius(self):
