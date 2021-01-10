@@ -292,6 +292,11 @@ class UserInput:
                 title='Please insert your coordinate or address!',
                 message='Please insert your coordinate or address!')
 
+        if self.get_radius == '':
+            tk.messagebox.showwarning(
+                title='Please insert your radius!',
+                message='Please insert your radius!')
+
         # TASK 2
         island_path = self.shp_file
         elevation_path = self.asc_file
@@ -368,10 +373,6 @@ class UserInput:
             tk.messagebox.showwarning(
                 title='Please insert your coordinate or address!',
                 message='Please insert your coordinate or address!')
-        if self.get_radius == '':
-            tk.messagebox.showwarning(
-                title='Please insert your radius!',
-                message='Please insert your radius!')
 
         # TASK 2
 
