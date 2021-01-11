@@ -14,6 +14,7 @@ import matplotlib.lines as mlines
 import matplotlib.pyplot as plt
 import pandas as pd
 import networkx as nx
+from pyproj import CRS
 
 # Packages for the creative tasks
 import tkinter as tk
@@ -24,7 +25,9 @@ from shapely.geometry import asShape
 import requests
 import pyproj
 
-# noinspection PyGlobalUndefined
+# Define the global variables for Tkinter GUI
+global getx, gety, getradius, getaddress
+
 
 class UserInput:
 
@@ -33,6 +36,8 @@ class UserInput:
         This class will include the GUI windows and tell user how to use the escape system. The main window let user
         choose work files and choose coordinate or address they want to insert,and then insert it and choose escape way.
         """
+        global getx, gety, getradius
+
         self.root = tk.Tk()
         self.root.title('Welcome to files choose system!')
         self.lb1 = tk.Label(
@@ -104,6 +109,7 @@ class UserInput:
         self.json_file = ''
         self.pt = ''
         self.get_radius = ''
+
         # Root window show in mid screen
         screenwidth = self.root.winfo_screenwidth()
         screenheight = self.root.winfo_screenheight()
@@ -113,13 +119,14 @@ class UserInput:
         self.root.geometry(midshow)
 
     def insert_coord(self):
-        global getx, gety, getradius, text_2, bt7
         """
         Design a user insert coordinate GUI use Insert coordinate button to check the coordinate point position.
         Reset button clear the user insert label. Get radius button to insert the escape radius.
         Go running button to calculate the escape path.
         Exit button let user to close the window.
         """
+
+        global getx, gety, getradius
 
         if self.shp_file == '' or self.json_file == '' or self.asc_file == '' or self.tif_file == '':
             tk.messagebox.showwarning(
@@ -314,8 +321,11 @@ class UserInput:
         island_path = self.shp_file
         elevation_path = self.asc_file
         itn_path = self.json_file
+        try:
+            buffer_range = int(self.get_radius)
+        except TypeError:
+            tk.messagebox.showerror(title='Error',text='Please enter a buffer distance.')
 
-        buffer_range = int(self.get_radius)
         out_loc = r'clip.tif'
         print(f'Clipping your input raster to a {buffer_range}m Buffer...')
         hp = HighestPoint(
@@ -689,7 +699,7 @@ class HighestPoint:
 
         # Create a 5km buffer from the point first, then turn to gdf
         buffer = self.__user_point.buffer(self.__buffer_range)
-        geo = gpd.GeoDataFrame({'geometry': buffer}, index=[0], crs="EPSG:27700")
+        geo = gpd.GeoDataFrame({'geometry': buffer}, index=[0], crs=CRS.from_epsg(27700))
 
         # Function to parse features from GeoDataFrame in such a manner that rasterio wants them
         clip_extent = [json.loads(geo.to_json())['features'][0]['geometry']]
@@ -699,9 +709,9 @@ class HighestPoint:
         out_meta.update({"driver": "GTiff",
                          "height": out_image.shape[1],
                          "width": out_image.shape[2],
-                         "transform": out_transform,
-                         "crs": 'epsg:27700'}
+                         "transform": out_transform}
                         )
+
         # Sets the output .tif location
         root = os.path.dirname(os.getcwd())
         out_tif = os.path.join(root, 'Material', 'elevation', self.__out_loc)
@@ -802,12 +812,10 @@ class NearestRoad:
             start = self.road_links[link]["start"]
             end = self.road_links[link]["end"]
             road = self.road_links[link]["coords"]
-            n = 0
             within = 0
             # Determine if the road exceeds the buffer zone
             for p in road:
-                point = Point(tuple(road[n]))
-                n += 1
+                point = Point(tuple(p))
                 if point.distance(self.user_input) >= self.buffer_range:
                     within += 1
             if within != 0:
