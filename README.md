@@ -25,7 +25,9 @@ How to use the software:
 3.	Locate files
 4.	$ python main.py
 
-![](images/GUI1.png)
+<p align = "center">
+<img src = "images/GUI2.png" width ="650">
+</p>
 
 5.	Insert each of the files needed
 a.	Asc = Elevation file of the island
@@ -36,7 +38,9 @@ d.	Tif file = Basemap .tif file for final mapplot
 7.	Warning: The GUI was designed for a Windows Operating System. When running the program in Linux, the software design is significantly poorer. 
 8.	If the user clicks ‘Insert Coordinate’
 
-![](images/GUI2.png)
+<p align = "center">
+<img src = "images/GUI2.png" width ="650">
+</p>
 
 9.	Firstly enter the coordinates and the size of buffer that the user would like to search. 
 10.	If the user is planning to run:
@@ -45,7 +49,9 @@ b.	For driving, the software will always take you to the highest point on the is
 11.	Then to check if you have entered correct coordinate format, or that you are on the island, the user must click ‘Insert coordinates’
 12.	The user can also click ‘Insert Address’ on the original window
 
-![](images/GUI3.png)
+<p align = "center">
+<img src = "images/GUI3.png" width ="650">
+</p>
 
 13.	This uses a Google Maps API. So the user can search anything that they would in Google. Some examples for the Isle of Wight could be:
 a.	Portland Inn, 2 Worsley Rd, Cowes PO31 8JN
@@ -57,5 +63,7 @@ c.	Bembridge Airport (Can be even simpler)
 **Output**
 
 These are the outputs for either walking (with 5km buffer) or driving to the highest pooint on the island.
+<p align = "center">
 <img src = "images/OUTPUT1.png" width ="650">
 <img src = "images/OUTPUT2.png" width ="650">
+</p>
