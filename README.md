@@ -18,6 +18,7 @@ Packages Required
 •	Numpy
 •	Json
 •	Rtree
+•	CRS
 
 How to use the software:
 1.	Clone the github repository: blueriver212/CEGE0096_sum2
