@@ -324,7 +324,7 @@ class UserInput:
         try:
             buffer_range = int(self.get_radius)
         except TypeError:
-            tk.messagebox.showerror(title='Error',text='Please enter a buffer distance.')
+            tk.messagebox.showerror(title='Error', text='Please enter a buffer distance.')
 
         out_loc = r'clip.tif'
         print(f'Clipping your input raster to a {buffer_range}m Buffer...')
@@ -365,12 +365,6 @@ class UserInput:
         print(f'The route of your journey is displayed on a pop-up map.')
         dijkstra = nr.get_nearest_path(g)
         nr.get_road_drive()
-        # if dijkstra[1] == float("inf"):
-        #     txt_res = "You only have one path partly outside the buffer zone to reach your destination"
-        #     text_2.insert(3.2, txt_res)
-        # else:
-        #     txt_res_1 = f'Walking to the highest point within 5km will takes you {dijkstra[1]} minutes'
-        #     #text_2.insert(3.2, txt_res_1)
 
         # TASK 5
         # plot background
@@ -898,7 +892,10 @@ class NearestRoad:
 
         # If there is no path within the buffer to reach the target node
         # Draw the shortest path partly outside the buffer
-
+        if length == float("inf"):
+            print("You only have one path partly outside the buffer zone to reach your destination")
+        else:
+            print(f'Walking to the highest point within 5km will takes you {length} minutes')
         links = []  # this list will be used to populate the feature id (fid) column
         geom = []  # this list will be used to populate the geometry column
         first_node = path[0]
