@@ -630,8 +630,8 @@ class GoogleMaps:
         self.__address = address
 
     def get_shapely_point(self):
-        # This is a personal key, and will expire halfway through Feb 2021
-        api_key = 'AIzaSyAbfly5_3lPTuaianFfWqrBFFP_NH6GsAU'
+        # You can get a free google maps api key here: https://console.cloud.google.com/
+        api_key = '<INSERT YOUR GOOGLE MAPS API KEY>'
 
         params = {
             'key': api_key,
